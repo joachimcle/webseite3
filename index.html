@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio</title>
+
+<style>
+    body {
+        font-family: Arial, Helvetica, sans-serif, sans-serif;
+        margin: 0;
+        background: white;
+        text-align: center;
+    }
+
+    /* Navigation oben rechts */
+    nav {
+        text-align: right;
+        padding: 20px;
+    }
+
+    nav a {
+        text-decoration: none;
+        color: #333;
+        font-weight: bold;
+        border: 1px solid #333;
+        padding: 8px 14px;
+        border-radius: 5px;
+    }
+
+    nav a:hover {
+        background: #333;
+        color: white;
+    }
+
+    a {
+        color: black;
+        text-decoration: none;
+        opacity: 0.6;
+        transition: opacity 0.3s ease;
+    }
+
+    a:hover {
+        text-decoration: underline;
+        opacity: 1;
+    }
+
+    .muted-link {
+        opacity: 0.6;
+        transition: opacity 0.3s ease;
+    }
+
+    .muted-link:hover {
+        opacity: 1;
+    }
+
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 2000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0);
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-content {
+        background-color: white;
+        padding: 30px;
+        border: none;
+        width: 500px;
+        max-width: 90%;
+        font-size: 14px;
+        line-height: 1.6;
+        text-align: justify;
+    }
+
+    .clickable {
+        cursor: pointer;
+        opacity: 0.2;
+        transition: opacity 0.3s ease;
+    }
+
+    .clickable:hover {
+        opacity: 1;
+    }
+
+    body.modal-open > *:not(.modal) {
+        opacity: 0.1;
+    }
+
+    body.modal-open .over {
+        opacity: 0.1;
+    }
+
+    body.modal-open .wavy-underline.clickable {
+        opacity: 1 !important;
+    }
+
+    body.modal-open .modal {
+        opacity: 1 !important;
+    }
+
+    body.modal-open .modal-content {
+        opacity: 1 !important;
+    }
+
+    .center {
+        text-align: justify;
+        margin-top: 100px;
+    }
+
+    .over {
+        margin-right: 1cm;
+        margin-left: 1cm;
+        max-width: 900px;
+        margin-right: auto;
+        margin-left: auto;
+        text-align: justify;
+        margin-top: 40px;
+    }
+
+    .work-item {
+        margin: 30px auto;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 0;
+        background: white;
+        border-radius: 8px;
+        box-shadow: none;
+        max-width: 900px;
+        text-align: justify;
+    }
+
+    .work-item-content {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .work-item-text {
+        flex: 1;
+        opacity: 0.2;
+        transition: opacity 0.3s ease;
+        cursor: pointer;
+    }
+
+    .work-item-text:hover,
+    .work-item.modal-open .work-item-text {
+        opacity: 1;
+    }
+
+    .work-item-header {
+        cursor: pointer;
+    }
+
+    .clickable-item {
+        cursor: pointer;
+    }
+
+    .work-item-header h3 {
+        opacity: 0.2 !important;
+        transition: opacity 0.3s ease;
+    }
+
+    .work-item:hover .work-item-header h3,
+    .work-item:hover .work-item-text {
+        opacity: 1 !important;
+    }
+
+    .work-item.modal-open .work-item-header h3,
+    .work-item.modal-open .work-item-text {
+        opacity: 1 !important;
+    }
+
+    .work-item-image {
+        width: 200px;
+        height: auto;
+        opacity: 0.2;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+        flex-shrink: 0;
+        cursor: pointer;
+    }
+
+    .work-item-image:hover,
+    .work-item-image.enlarged {
+        opacity: 1;
+    }
+
+    .work-item-image.enlarged {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(3);
+        width: 200px;
+        z-index: 1000;
+        pointer-events: auto;
+    }
+    
+    .enlarged-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 999;
+        pointer-events: auto;
+    }
+
+    .work-item-video {
+        width: 200px;
+        height: auto;
+        opacity: 0.2;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+        flex-shrink: 0;
+        cursor: pointer;
+        aspect-ratio: 16 / 9;
+        pointer-events: none;
+    }
+
+    .work-item-video-container {
+        position: relative;
+        width: 200px;
+        aspect-ratio: 16 / 9;
+        flex-shrink: 0;
+        cursor: pointer;
+    }
+
+    .work-item-video-container:hover .work-item-video,
+    .work-item-video.enlarged {
+        opacity: 1;
+    }
+
+    .work-item-video-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+        z-index: 10;
+    }
+
+    .work-item-video:hover,
+    .work-item-video.enlarged {
+        opacity: 1;
+    }
+
+    .work-item-video.enlarged {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(3);
+        width: 200px;
+        z-index: 1000;
+        pointer-events: auto;
+    }
+
+    @media (max-width: 768px) {
+        .work-item-content {
+            flex-direction: column;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+    <div id="bioModal" class="modal">
+        <div class="modal-content">
+            <h3 style="opacity: 1; margin-top: 0; margin-bottom: 15px; font-size: 16px;">Joachim Clematide</h3>
+            <p>Joachim Clematide combines his background in social pedagogy with sound and video art, often approaching his work in a playful and experimental way. His practice focuses on critically examining social power structures. He is currently pursuing a master’s degree in Transdisciplinarity in the Arts at ZHDK.</p>
+            <p style="margin-top: 20px;"><a href="mailto:mail@joachimclematide.com">Contact</a></p>
+        </div>
+    </div>
+
+    <div class="over" style="display: flex; justify-content: space-between; gap: 40px; align-items: center;">
+        <h3 style="margin: 0;"><span class="wavy-underline clickable" id="bioTrigger">Joachim Clematide</span></h3>
+        <h3 style="margin: 0;"><span class="wavy-underline clickable" id="ausstellungenTrigger">About</span></h3>
+    </div>
+
+    <div id="ausstellungenModal" class="modal">
+        <div class="modal-content">
+            <h3 style="opacity: 1; margin-top: 0; margin-bottom: 15px; font-size: 16px;">Exhibitions</h3>
+            <p><b>Future</b></p>
+            <p>19.03.26-21.03.26, Veränderung, Brautone, Zürich</p>
+            <p>21.05.26-20.09.26, <a href="https://museum-gestaltung.ch/de/ausstellung/pling-design-hoeren" target="_blank" class="muted-link">Answer the Call</a>, Museum für Gestaltung, Zürich</p>
+             <p>04.09.26-25.10.26, <a href="https://kornhausforum.ch/de/ausstellung/atlas-der-reproduktion-babys-grenzen-geopolitik/" target="_blank" class="muted-link">Baby</a>, Kornhausforum, Bern</p>
+
+            <p><b>Past</b></p>
+            <p><b>2025</b></p>
+             <p><a href="https://www.lab30.de/programm-2025/answerthecall" target="_blank" class="muted-link">Answer the Call</a>, Lab.30, Augsburg</p>
+      <p><b>Awards</b></p>
+      <p>2025 - Lab Award 2025, Lab.30 Augsburg</p>
+            </div>
+    </div>
+
+    <div class="work-item" id="answerWorkItem">
+        <div class="work-item-header clickable-item" id="answerHeader">
+            <h3 style="margin: 0; opacity: 0.2; transition: opacity 0.3s ease;">Answer the call</h3>
+        </div>
+        <div class="work-item-content">
+            <div class="work-item-text clickable-item" id="answerText">
+                <p>(with <a href="https://simonbraissant.com" target="_blank">Simon Braissant</a>) is an interactive audio installation that connects two corded telephones located in different places to create an unusual dialogue: each utterance must be louder than the previous one otherwise it is suppressed. In this way, the conversation escalates inexorably.</p>
+            </div>
+            <img src="answer-the-call.jpg" alt="Answer the call" class="work-item-image" id="workImage">
+            <div class="work-item-video-container" id="workVideoContainer">
+                <iframe src="https://player.vimeo.com/video/1122788483" class="work-item-video" id="workVideo" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+                <div class="work-item-video-overlay"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="answerModal" class="modal">
+        <div class="modal-content">
+            <h3 style="opacity: 1; margin-top: 0; margin-bottom: 5px; font-size: 16px;">Answer the call</h3>
+            <p style="opacity: 1; font-size: 14px; margin-top: 0; margin-bottom: 20px;">Telephone, Arduino, Software, 2025</p>
+            <p style="opacity: 1;">'Answer the Call' connects two corded telephones located in different places to create an unusual dialogue: each utterance must be louder than the previous oneotherwise it is suppressed. This causes the conversation to escalate inexorably. It ends as soon as one of the receivers is hung up. Especially on social media, interactions that trigger strong emotional reactions are often preferred. Algorithms deliberately reinforce these dynamics in order to increase the duration of user interaction. This often leads to a loud and confrontational communication culture with superficial content. The installation allows visitors to experience how algorithms can shape and intensify communication and shift power relations.
+
+</p>
+
+        </div>
+    </div>
+
+    <div class="work-item" id="orrorWorkItem">
+        <div class="work-item-header clickable-item" id="orrorHeader">
+            <h3 style="margin: 0; opacity: 0.2; transition: opacity 0.3s ease;">Orror</h3>
+        </div>
+        <div class="work-item-content">
+            <div class="work-item-text clickable-item" id="orrorText">
+                <p>Musical duo <a href="https://orror.bandcamp.com/" target="_blank" class="muted-link">Orror</a>, (with Flavio Righetti) produces electronic music and performs live and DJ sets. 
+
+Our work focuses on connecting different genres that, at first glance, might not seem compatible. In our music, we emphasize the diversity of rhythms. Inspired by classic funk patterns, analog and digital synthesizers, and the creative use and manipulation of samples, we craft soundscapes that are both surprising and danceable.</p>
+            </div>
+            <img src="orror.jpg" alt="Orror" class="work-item-image" id="orrorImage">
+            <img src="orror2.jpg" alt="Orror" class="work-item-image" id="orrorImage2">
+        </div>
+    </div>
+
+    <div id="orrorModal" class="modal">
+        <div class="modal-content">
+            <h3 style="opacity: 1; margin-top: 0; margin-bottom: 5px; font-size: 16px;">Orror</h3>
+            <p style="opacity: 1;">seit 2017 unter dem Künstlernamen
+The musical duo Orror, consisting of Flavio Righetti and myself, produces electronic music and performs live and DJ sets.
+
+Our work focuses on connecting different genres that, at first glance, might not seem compatible. In our music, we emphasize the diversity of rhythms. Inspired by classic funk patterns, analog and digital synthesizers, and the creative use and manipulation of samples, we craft soundscapes that are both surprising and danceable. The performances take place in clubs, on radio, and in exhibition contexts, including <a href="https://gds.fm/artists/orror-show" target="_blank" class="muted-link">GDS.FM</a>, Lora.fm, the Rote Fabrik, Umbo, and Kraftfeld Winterthur.</p>
+        </div>
+    </div>
+
+    <script>
+        // Answer the Call Modal
+        const answerHeader = document.getElementById('answerHeader');
+        const answerText = document.getElementById('answerText');
+        const answerModal = document.getElementById('answerModal');
+        const answerWorkItem = document.getElementById('answerWorkItem');
+
+        function openAnswerModal() {
+            answerModal.style.display = 'flex';
+            document.body.classList.add('modal-open');
+            answerWorkItem.classList.add('modal-open');
+            answerModal.style.zIndex = '1000';
+        }
+
+        function closeAnswerModal() {
+            answerModal.style.display = 'none';
+            document.body.classList.remove('modal-open');
+            answerWorkItem.classList.remove('modal-open');
+        }
+
+        answerHeader.addEventListener('click', openAnswerModal);
+        answerText.addEventListener('click', openAnswerModal);
+
+        answerModal.addEventListener('click', function(e) {
+            if (e.target === answerModal) {
+                closeAnswerModal();
+            }
+        });
+
+        // Orror Modal
+        const orrorHeader = document.getElementById('orrorHeader');
+        const orrorText = document.getElementById('orrorText');
+        const orrorModal = document.getElementById('orrorModal');
+        const orrorWorkItem = document.getElementById('orrorWorkItem');
+
+        function openOrrorModal() {
+            orrorModal.style.display = 'flex';
+            document.body.classList.add('modal-open');
+            orrorWorkItem.classList.add('modal-open');
+            orrorModal.style.zIndex = '1000';
+        }
+
+        function closeOrrorModal() {
+            orrorModal.style.display = 'none';
+            document.body.classList.remove('modal-open');
+            orrorWorkItem.classList.remove('modal-open');
+        }
+
+        orrorHeader.addEventListener('click', openOrrorModal);
+        orrorText.addEventListener('click', openOrrorModal);
+
+        orrorModal.addEventListener('click', function(e) {
+            if (e.target === orrorModal) {
+                closeOrrorModal();
+            }
+        });
+
+        document.getElementById('workImage').addEventListener('click', function(e) {
+            e.stopPropagation();
+            this.classList.toggle('enlarged');
+            if (this.classList.contains('enlarged')) {
+                createOverlay();
+            }
+        });
+
+        document.getElementById('orrorImage').addEventListener('click', function(e) {
+            e.stopPropagation();
+            this.classList.toggle('enlarged');
+            if (this.classList.contains('enlarged')) {
+                createOverlay();
+            }
+        });
+
+        document.getElementById('orrorImage2').addEventListener('click', function(e) {
+            e.stopPropagation();
+            this.classList.toggle('enlarged');
+            if (this.classList.contains('enlarged')) {
+                createOverlay();
+            }
+        });
+        
+        function createOverlay() {
+            let overlay = document.getElementById('enlargedOverlay');
+            if (!overlay) {
+                overlay = document.createElement('div');
+                overlay.id = 'enlargedOverlay';
+                overlay.className = 'enlarged-overlay';
+                document.body.appendChild(overlay);
+                overlay.addEventListener('click', closeEnlarged);
+            }
+        }
+        
+        function closeEnlarged() {
+            const imgWork = document.getElementById('workImage');
+            const imgOrror = document.getElementById('orrorImage');
+            const imgOrror2 = document.getElementById('orrorImage2');
+            const videoWork = document.getElementById('workVideo');
+            const videoOrror = document.getElementById('orrorVideo');
+            
+            if (imgWork) imgWork.classList.remove('enlarged');
+            if (imgOrror) imgOrror.classList.remove('enlarged');
+            if (imgOrror2) imgOrror2.classList.remove('enlarged');
+            if (videoWork) {
+                videoWork.classList.remove('enlarged');
+                videoWork.style.opacity = '';
+            }
+            if (videoOrror) {
+                videoOrror.classList.remove('enlarged');
+                videoOrror.style.opacity = '';
+            }
+            
+            const overlay = document.getElementById('enlargedOverlay');
+            if (overlay) {
+                overlay.remove();
+            }
+        }
+
+        document.getElementById('workVideoContainer').addEventListener('click', function(e) {
+            e.stopPropagation();
+            const video = document.getElementById('workVideo');
+            video.classList.toggle('enlarged');
+            if (video.classList.contains('enlarged')) {
+                video.style.opacity = '1';
+                createOverlay();
+            }
+        });
+
+        const orrorVideoContainer = document.getElementById('orrorVideoContainer');
+        if (orrorVideoContainer) {
+            orrorVideoContainer.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const video = document.getElementById('orrorVideo');
+                video.classList.toggle('enlarged');
+                if (video.classList.contains('enlarged')) {
+                    video.style.opacity = '1';
+                    createOverlay();
+                }
+            });
+        }
+
+        document.addEventListener('click', function(e) {
+            // Ignore clicks on enlarged items
+            if (e.target.classList && (e.target.classList.contains('enlarged') || 
+                e.target.closest('.enlarged-overlay'))) {
+                return;
+            }
+        });
+
+        // Bio Modal
+        const bioModal = document.getElementById('bioModal');
+        const bioTrigger = document.getElementById('bioTrigger');
+
+        function openBioModal() {
+            bioModal.style.display = 'flex';
+            document.body.classList.add('modal-open');
+            bioTrigger.style.opacity = '1';
+        }
+
+        function closeBioModal() {
+            bioModal.style.display = 'none';
+            document.body.classList.remove('modal-open');
+            bioTrigger.style.opacity = '0.1';
+        }
+
+        bioTrigger.addEventListener('click', openBioModal);
+
+        bioModal.addEventListener('click', function(e) {
+            if (e.target === bioModal) {
+                closeBioModal();
+            }
+        });
+
+        bioTrigger.addEventListener('mouseenter', function() {
+            bioTrigger.style.opacity = '1';
+        });
+
+        bioTrigger.addEventListener('mouseleave', function() {
+            if (bioModal.style.display !== 'flex') {
+                bioTrigger.style.opacity = '0.1';
+            }
+        });
+
+        // Ausstellungen Modal
+        const ausstellungenModal = document.getElementById('ausstellungenModal');
+        const ausstellungenTrigger = document.getElementById('ausstellungenTrigger');
+
+        function openAusstellungenModal() {
+            ausstellungenModal.style.display = 'flex';
+            document.body.classList.add('modal-open');
+            ausstellungenTrigger.style.opacity = '1';
+        }
+
+        function closeAusstellungenModal() {
+            ausstellungenModal.style.display = 'none';
+            document.body.classList.remove('modal-open');
+            ausstellungenTrigger.style.opacity = '0.1';
+        }
+
+        ausstellungenTrigger.addEventListener('click', openAusstellungenModal);
+
+        ausstellungenModal.addEventListener('click', function(e) {
+            if (e.target === ausstellungenModal) {
+                closeAusstellungenModal();
+            }
+        });
+
+        ausstellungenTrigger.addEventListener('mouseenter', function() {
+            ausstellungenTrigger.style.opacity = '1';
+        });
+
+        ausstellungenTrigger.addEventListener('mouseleave', function() {
+            if (ausstellungenModal.style.display !== 'flex') {
+                ausstellungenTrigger.style.opacity = '0.1';
+            }
+        });
+    </script>
+
+</body>
+</html>
+
