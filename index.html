@@ -10,7 +10,7 @@
 <style>
     body {
         font-family: Arial, Helvetica, sans-serif, sans-serif;
-        margin: 3;
+        margin: 0;
         background: white;
         text-align: center;
     }
@@ -276,7 +276,7 @@
         <div class="modal-content">
             <h1 style="opacity: 1; margin-top: 0; margin-bottom: 15px; font-size: 16px;">Joachim Clematide</h1>
             <p>Joachim Clematide combines his background in social pedagogy with sound and video art, often approaching his work in a playful and experimental way. His practice focuses on critically examining social power structures. He is currently pursuing a master’s degree in Transdisciplinarity in the Arts at ZHDK.</p>
-            <p style="margin-top: 20px;"><a href="mailto:jclematide@sunrise.ch">Contact</a></p>
+            <p style="margin-top: 20px;"><a href="mailto:mail@joachimclematide.com">Contact</a></p>
         </div>
     </div>
 
@@ -289,16 +289,43 @@
         <div class="modal-content">
             <h3 style="opacity: 1; margin-top: 0; margin-bottom: 15px; font-size: 16px;">Exhibitions</h3>
             <p><b>Future</b></p>
-            <p>19.03.26-21.03.26, Veränderung, Brautone, Zürich</p>
+            <p>07.05.26-10.05.26, <a href="https://www.lot.wien/futureterritories" target="_blank" class="muted-link">Answer the Call</a>, Echolot, Wien</p>
             <p>21.05.26-20.09.26, <a href="https://museum-gestaltung.ch/de/ausstellung/pling-design-hoeren" target="_blank" class="muted-link">Answer the Call</a>, Museum für Gestaltung, Zürich</p>
              <p>04.09.26-25.10.26, <a href="https://kornhausforum.ch/de/ausstellung/atlas-der-reproduktion-babys-grenzen-geopolitik/" target="_blank" class="muted-link">Baby</a>, Kornhausforum, Bern</p>
-
+            <p>14.10.26-18.10.26, <a href="https://meshfestival.ch/" target="_blank" class="muted-link">Answer the Call</a>, Mesh Festival, Basel</p>
             <p><b>Past</b></p>
+            <p><b>2026</b></p>
+             <p>19.03.26-21.03.26, Time Changes, Brautone, Zürich</p>
             <p><b>2025</b></p>
              <p><a href="https://www.lab30.de/programm-2025/answerthecall" target="_blank" class="muted-link">Answer the Call</a>, Lab.30, Augsburg</p>
       <p><b>Awards</b></p>
       <p>2025 - Lab Award 2025, Lab.30 Augsburg</p>
             </div>
+    </div>
+
+    <div class="work-item" id="timesChangeWorkItem">
+        <div class="work-item-header clickable-item" id="timesChangeHeader">
+            <h3 style="margin: 0; opacity: 0.2; transition: opacity 0.3s ease;">Time Changes</h3>
+        </div>
+        <div class="work-item-content">
+            <div class="work-item-text clickable-item" id="timesChangeText">
+                <p>The interactive sound and video installation "Time Changes" shows how colors and sounds change and make time perceptible. It illustrates how perception and change are interconnected.</p>
+            </div>
+            <img src="timeschange1.jpg" alt="Time Changes" class="work-item-image" id="timesChangeImage">
+            <img src="timeschange2.jpg" alt="Time Changes" class="work-item-image" id="timesChangeImage2">
+        </div>
+    </div>
+
+    <div id="timesChangeModal" class="modal">
+        <div class="modal-content">
+            <h2 style="opacity: 1; margin-top: 0; margin-bottom: 5px; font-size: 16px;">Time Changes</h2>
+            <p style="opacity: 1; font-size: 14px; margin-top: 0; margin-bottom: 20px;">Screens, Headphones, Computers, Arduino, Effect Pedal, 2026</p>
+            <p style="opacity: 1;">The interactive video and sound installation Time Changes makes time experientially perceptible both visually and audibly.
+
+In the visual component, two primary colors are mixed using time as a parameter. A pedal allows the color transition speed to be adjusted between one second and 1/60 of a second. This represents the maximum rate that this screens are capable of displaying. For the human eye, this sequence is no longer perceptible, and the colors blend together.
+
+In the auditory component, the mixed color is named and divided into four parts. The change occurs purely through extending or shortening the pauses between playback segments.</p>
+        </div>
     </div>
 
     <div class="work-item" id="answerWorkItem">
@@ -345,7 +372,7 @@ Our work focuses on connecting different genres that, at first glance, might not
 
     <div id="orrorModal" class="modal">
         <div class="modal-content">
-            <h3 style="opacity: 1; margin-top: 0; margin-bottom: 5px; font-size: 16px;">Orror</h3>
+            <h2 style="opacity: 1; margin-top: 0; margin-bottom: 5px; font-size: 16px;">Orror</h2>
             <p>Musical duo <a href="https://orror.bandcamp.com/" target="_blank" class="muted-link">Orror</a>, (with Flavio Righetti) produces electronic music and performs live and DJ sets.
 
 Our work focuses on connecting different genres that, at first glance, might not seem compatible. In our music, we emphasize the diversity of rhythms. Inspired by classic funk patterns, analog and digital synthesizers, and the creative use and manipulation of samples, we craft soundscapes that are both surprising and danceable. The performances take place in clubs, on radio, and in exhibition contexts, including <a href="https://gds.fm/artists/orror-show" target="_blank" class="muted-link">GDS.FM</a>, Lora.fm, the Rote Fabrik, Umbo, and Kraftfeld Winterthur.</p>
@@ -353,6 +380,34 @@ Our work focuses on connecting different genres that, at first glance, might not
     </div>
 
     <script>
+        // Times Change Modal
+        const timesChangeHeader = document.getElementById('timesChangeHeader');
+        const timesChangeText = document.getElementById('timesChangeText');
+        const timesChangeModal = document.getElementById('timesChangeModal');
+        const timesChangeWorkItem = document.getElementById('timesChangeWorkItem');
+
+        function openTimesChangeModal() {
+            timesChangeModal.style.display = 'flex';
+            document.body.classList.add('modal-open');
+            timesChangeWorkItem.classList.add('modal-open');
+            timesChangeModal.style.zIndex = '1000';
+        }
+
+        function closeTimesChangeModal() {
+            timesChangeModal.style.display = 'none';
+            document.body.classList.remove('modal-open');
+            timesChangeWorkItem.classList.remove('modal-open');
+        }
+
+        timesChangeHeader.addEventListener('click', openTimesChangeModal);
+        timesChangeText.addEventListener('click', openTimesChangeModal);
+
+        timesChangeModal.addEventListener('click', function(e) {
+            if (e.target === timesChangeModal) {
+                closeTimesChangeModal();
+            }
+        });
+
         // Answer the Call Modal
         const answerHeader = document.getElementById('answerHeader');
         const answerText = document.getElementById('answerText');
@@ -432,7 +487,23 @@ Our work focuses on connecting different genres that, at first glance, might not
                 createOverlay();
             }
         });
-        
+
+        document.getElementById('timesChangeImage').addEventListener('click', function(e) {
+            e.stopPropagation();
+            this.classList.toggle('enlarged');
+            if (this.classList.contains('enlarged')) {
+                createOverlay();
+            }
+        });
+
+        document.getElementById('timesChangeImage2').addEventListener('click', function(e) {
+            e.stopPropagation();
+            this.classList.toggle('enlarged');
+            if (this.classList.contains('enlarged')) {
+                createOverlay();
+            }
+        });
+
         function createOverlay() {
             let overlay = document.getElementById('enlargedOverlay');
             if (!overlay) {
@@ -448,12 +519,16 @@ Our work focuses on connecting different genres that, at first glance, might not
             const imgWork = document.getElementById('workImage');
             const imgOrror = document.getElementById('orrorImage');
             const imgOrror2 = document.getElementById('orrorImage2');
+            const imgTimesChange = document.getElementById('timesChangeImage');
+            const imgTimesChange2 = document.getElementById('timesChangeImage2');
             const videoWork = document.getElementById('workVideo');
             const videoOrror = document.getElementById('orrorVideo');
-            
+
             if (imgWork) imgWork.classList.remove('enlarged');
             if (imgOrror) imgOrror.classList.remove('enlarged');
             if (imgOrror2) imgOrror2.classList.remove('enlarged');
+            if (imgTimesChange) imgTimesChange.classList.remove('enlarged');
+            if (imgTimesChange2) imgTimesChange2.classList.remove('enlarged');
             if (videoWork) {
                 videoWork.classList.remove('enlarged');
                 videoWork.style.opacity = '';
@@ -571,4 +646,3 @@ Our work focuses on connecting different genres that, at first glance, might not
 
 </body>
 </html>
-
