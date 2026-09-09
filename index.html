@@ -309,6 +309,30 @@
             </div>
     </div>
 
+    <div class="work-item" id="mutterWorkItem">
+        <div class="work-item-header clickable-item" id="mutterHeader">
+            <h3 style="margin: 0; opacity: 0.2; transition: opacity 0.3s ease;">Becoming a mother in the asylum system</h3>
+        </div>
+        <div class="work-item-content">
+            <div class="work-item-text clickable-item" id="mutterText">
+                <p>(with Lisa Gerig) is a video installation based on the research of Laura Perler at the Institute of Geography at the University of Bern. The videos portray the intimate atmosphere of sleeping mothers and their babies in Swiss households during the postpartum period. This is juxtaposed with an audio piece composed of condensed accounts by refugee mothers, reporting on conditions in Swiss federal asylum centres.</p>
+            </div>
+            <img src="mutter1.JPG" alt="Becoming a Mother in the asylum system" class="work-item-image" id="mutterImage">
+            <img src="mutter2.JPG" alt="Becoming a Mother in the asylum system" class="work-item-image" id="mutterImage2">
+        </div>
+    </div>
+
+    <div id="mutterModal" class="modal">
+        <div class="modal-content">
+            <h2 style="opacity: 1; margin-top: 0; margin-bottom: 5px; font-size: 16px;">Becoming a mother in the asylum system</h2>
+            <p style="opacity: 1; font-size: 14px; margin-top: 0; margin-bottom: 20px;">Beamer, Video projection, Speakers, MP3 player, Arduino, Headphones, Bean bags, Stools, 2026</p>
+            <p style="opacity: 1;">(with Lisa Gerig) is a video installation based on the research of Laura Perler at the Institute of Geography at the University of Bern.
+The videos portray the intimate atmosphere of sleeping mothers and their babies in Swiss households during the postpartum period. This is juxtaposed with an audio piece composed of condensed accounts by refugee mothers, reporting on conditions in Swiss federal asylum centres.
+
+The video installation is part of the exhibition <a href="https://www.atlas-der-reproduktion.ch/" target="_blank" class="muted-link">«Atlas of Reproduction – Babies, Borders, Geopolitics»</a>, which maps the connections between geopolitics and the intimate decisions made in bedrooms, delivery rooms and clinics. Through artistic works based on academic research projects, the exhibition addresses reproductive justice in Switzerland and in different parts of the world.</p>
+        </div>
+    </div>
+
     <div class="work-item" id="timesChangeWorkItem">
         <div class="work-item-header clickable-item" id="timesChangeHeader">
             <h3 style="margin: 0; opacity: 0.2; transition: opacity 0.3s ease;">Time Changes</h3>
@@ -386,6 +410,50 @@ Our work focuses on connecting different genres that, at first glance, might not
     </div>
 
     <script>
+        // Becoming a Mother Modal
+        const mutterHeader = document.getElementById('mutterHeader');
+        const mutterText = document.getElementById('mutterText');
+        const mutterModal = document.getElementById('mutterModal');
+        const mutterWorkItem = document.getElementById('mutterWorkItem');
+
+        function openMutterModal() {
+            mutterModal.style.display = 'flex';
+            document.body.classList.add('modal-open');
+            mutterWorkItem.classList.add('modal-open');
+            mutterModal.style.zIndex = '1000';
+        }
+
+        function closeMutterModal() {
+            mutterModal.style.display = 'none';
+            document.body.classList.remove('modal-open');
+            mutterWorkItem.classList.remove('modal-open');
+        }
+
+        mutterHeader.addEventListener('click', openMutterModal);
+        mutterText.addEventListener('click', openMutterModal);
+
+        mutterModal.addEventListener('click', function(e) {
+            if (e.target === mutterModal) {
+                closeMutterModal();
+            }
+        });
+
+        document.getElementById('mutterImage').addEventListener('click', function(e) {
+            e.stopPropagation();
+            this.classList.toggle('enlarged');
+            if (this.classList.contains('enlarged')) {
+                createOverlay();
+            }
+        });
+
+        document.getElementById('mutterImage2').addEventListener('click', function(e) {
+            e.stopPropagation();
+            this.classList.toggle('enlarged');
+            if (this.classList.contains('enlarged')) {
+                createOverlay();
+            }
+        });
+
         // Times Change Modal
         const timesChangeHeader = document.getElementById('timesChangeHeader');
         const timesChangeText = document.getElementById('timesChangeText');
@@ -522,6 +590,10 @@ Our work focuses on connecting different genres that, at first glance, might not
         }
         
         function closeEnlarged() {
+            const imgMutter = document.getElementById('mutterImage');
+            const imgMutter2 = document.getElementById('mutterImage2');
+            if (imgMutter) imgMutter.classList.remove('enlarged');
+            if (imgMutter2) imgMutter2.classList.remove('enlarged');
             const imgWork = document.getElementById('workImage');
             const imgOrror = document.getElementById('orrorImage');
             const imgOrror2 = document.getElementById('orrorImage2');
